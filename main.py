@@ -72,7 +72,8 @@ def main():
     Z = np.reshape(Z, X.shape)
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='viridis', edgecolor='none')
+    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='viridis', edgecolor='none', alpha=0.2)
+    ax.scatter([x[0] for x in x_history], [x[1] for x in x_history], [rastringin.rastringin(x) for x in x_history], c='r', s=10)
     plt.show()
 
 
