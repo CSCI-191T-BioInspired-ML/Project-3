@@ -52,56 +52,61 @@ def simulated_annealing(func, init_x, init_temp, k, neighbor_range=0.1, step_num
 
 def main():
     # random initial x
-    init_x = [random.uniform(-5, 5) for _ in range(2)]
+    init_x = [random.uniform(-3, 3) for _ in range(2)]
     lr = 0.01
     x, x_history = gradient_descent(rastringin.gradient, init_x, lr, 200)
 
     # Plot the results
-    plt.plot(x_history)
-    plt.xlabel('Step')
-    plt.ylabel('x')
-    plt.text(len(x_history)/2, x[0], 'x0 = %.2f' % x[0])
-    plt.text(len(x_history), x[1], 'x1 = %.2f' % x[1])
-    plt.show()
+    # plt.plot(x_history)
+    # plt.xlabel('Step')
+    # plt.ylabel('x')
+    # plt.text(len(x_history)/2, x[0], 'x0 = %.2f' % x[0])
+    # plt.text(len(x_history), x[1], 'x1 = %.2f' % x[1])
+    # plt.show()
 
     # plot points on 3d surface of rastringin function
-    x_range = np.arange(-5, 5, 0.1)
-    y_range = np.arange(-5, 5, 0.1)
-    X, Y = np.meshgrid(x_range, y_range)
-    Z = [ np.array(rastringin.rastringin([x, y])) for x, y in zip(np.ravel(X), np.ravel(Y)) ]
-    Z = np.reshape(Z, X.shape)
-    fig = plt.figure()
-    ax = fig.gca(projection='3d')
-    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='viridis', edgecolor='none', alpha=0.2)
-    ax.scatter([x[0] for x in x_history], [x[1] for x in x_history], [rastringin.rastringin(x) for x in x_history], c='r', s=10)
-    plt.show()
+    # x_range = np.arange(-5, 5, 0.1)
+    # y_range = np.arange(-5, 5, 0.1)
+    # X, Y = np.meshgrid(x_range, y_range)
+    # Z = [ np.array(rastringin.rastringin([x, y])) for x, y in zip(np.ravel(X), np.ravel(Y)) ]
+    # Z = np.reshape(Z, X.shape)
+    # fig = plt.figure()
+    # ax = fig.gca(projection='3d')
+    # ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='viridis', edgecolor='none', alpha=0.2)
+    # ax.scatter([x[0] for x in x_history], [x[1] for x in x_history], [rastringin.rastringin(x) for x in x_history], c='r', s=10)
+    # plt.show()
 
 
     # Simulated annealing
     init_temp = 100
     init_s = init_x
-    s, s_history = simulated_annealing(rastringin.rastringin, init_s, init_temp, 1, 0.1, 10000)
+    s, s_history = simulated_annealing(rastringin.rastringin, init_s, init_temp, 1, 0.01, 10000)
 
     # Plot the results
-    # plt.plot(s_history)
-    # plt.xlabel('Step')
-    # plt.ylabel('s')
-    # plt.text(len(s_history)/2, s[0], 'x0 = %.2f' % s[0])
-    # plt.text(len(s_history), s[1], 'x1 = %.2f' % s[1])
-    # plt.show()
+    plt.plot(s_history)
+    plt.xlabel('Step')
+    plt.ylabel('s')
+    plt.text(len(s_history)/2, s[0], 'x0 = %.2f' % s[0])
+    plt.text(len(s_history), s[1], 'x1 = %.2f' % s[1])
+    plt.show()
 
     # 
 
     # # Plot points on the 3d surface
-    # x_range = np.arange(-5, 5, 0.1)
-    # y_range = np.arange(-5, 5, 0.1)
-    # x_grid, y_grid = np.meshgrid(x_range, y_range)
-    # z_grid = [[rastringin.rastringin([x_grid[i][j], y_grid[i][j]]) for j in range(len(y_range))] for i in range(len(x_range))]
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111, projection='3d')
-    # ax.plot_surface(x_grid, y_grid, z_grid, cmap='rainbow')
-    # ax.scatter(s[0], s[1], rastringin.rastringin(s), c='r', marker='o')
-    # plt.show()
+    x_range = np.arange(-5, 5, 0.1)
+    y_range = np.arange(-5, 5, 0.1)
+    x_grid, y_grid = np.meshgrid(x_range, y_range)
+    z_grid = np.array([np.array([rastringin.rastringin([x_grid[i][j], y_grid[i][j]]) for j in range(len(y_range))]) for i in range(len(x_range))])
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_surface(x_grid, y_grid, z_grid, cmap='rainbow', alpha=0.1, edgecolor='none', linewidth=0)
+
+    # Define colors for each point (starting from blue and going to red)
+    colors = []
+    for i in range(len(s_history)):
+        colors.append(1 - i / len(x_history))
+    ax.scatter([ x[0] for x in s_history ], [ x[1] for x in s_history ], [ rastringin.rastringin(x) for x in s_history ], c=colors, s=1)
+    plt.show()
 
 if __name__ == '__main__':
     main()
