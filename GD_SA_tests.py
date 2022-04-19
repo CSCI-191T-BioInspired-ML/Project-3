@@ -71,9 +71,9 @@ def ackley_tests():
     # SA
     counts = {}
     for i in range(ITERATIONS):
-        init_temp = 0.01
+        init_temp = 50
         init_s = [random.uniform(-5, 5) for _ in range(2)]
-        s, s_history = simulated_annealing(ackley.ackley, init_s, init_temp, 5, 0.1, 200)
+        s, s_history = simulated_annealing(ackley.ackley, init_s, init_temp, 10, 0.1, 1000)
         counts = stats.proximity_percentage(ackley.ackley([0,0]), ackley.ackley(s), counts)
     for i in ranges:
         print("Ackley - SA: <", i, ": ", counts.get(i, 0) / ITERATIONS * 100, "%")
