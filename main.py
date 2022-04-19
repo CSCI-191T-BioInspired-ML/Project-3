@@ -1,40 +1,43 @@
-import rastringin
+import rastrigin
 import sphere
 import ackley
 import plot
+import matplotlib.pyplot as plt
 from GD import gradient_descent
 from SA import simulated_annealing
 
 import random
 
-def rastringin_GD_SA():
+def rastrigin_GD_SA():
     # random initial x
-    init_x = [random.uniform(-3, 3) for _ in range(2)]
+    init_x = [random.uniform(-5, 5) for _ in range(2)]
     print("Initial x: ", init_x)
 
     # Gradient descent
     lr = 0.01
-    x, x_history = gradient_descent(rastringin.rastringin_gradient, init_x, lr, 200)
+    x, x_history = gradient_descent(rastrigin.rastrigin_gradient, init_x, lr, 200)
 
     # Plot the results
-    plot.plot_results(x_history, 'Rastringin - GD')
-    plot.print_results(x, 'Rastringin - GD')
+    plot.plot_results(x_history, 'Rastrigin - GD')
+    plot.print_results(x, 'Rastrigin - GD')
 
     # Plot 3d surface and history
-    plot.plot_history(x_history, rastringin.rastringin, [-5, 5], [-5, 5], 'Rastringin - GD')
+    plot.plot_history(x_history, rastrigin.rastrigin, [-5, 5], [-5, 5], 'Rastrigin - GD')
+    plt.show()
 
 
     # Simulated annealing
-    init_temp = 100
+    init_temp = 50
     init_s = init_x
-    s, s_history = simulated_annealing(rastringin.rastringin, init_s, init_temp, 1, 0.01, 10000)
+    s, s_history = simulated_annealing(rastrigin.rastrigin, init_s, init_temp, 1, 0.1, 10000)
 
     # Plot the results
-    plot.plot_results(s_history, 'Rastringin - SA')
-    plot.print_results(s, 'Rastringin - SA') 
+    plot.plot_results(s_history, 'Rastrigin - SA')
+    plot.print_results(s, 'Rastrigin - SA') 
 
     # Plot 3d surface and history
-    plot.plot_history(s_history, rastringin.rastringin, [-5, 5], [-5, 5], 'Rastringin - SA')
+    plot.plot_history(s_history, rastrigin.rastrigin, [-5, 5], [-5, 5], 'Rastrigin - SA')
+    plt.show()
 
 def sphere_GD_SA():
     # random initial x
@@ -51,7 +54,7 @@ def sphere_GD_SA():
 
     # Plot 3d surface and history
     plot.plot_history(x_history, sphere.sphere, [-5, 5], [-5, 5], 'Sphere - GD')
-
+    plt.show()
 
     # Simulated annealing
     init_temp = 100
@@ -64,12 +67,12 @@ def sphere_GD_SA():
 
     # Plot 3d surface and history
     plot.plot_history(s_history, sphere.sphere, [-5, 5], [-5, 5], 'Sphere - SA')
+    plt.show()
 
 def ackley_GD_SA():
     # random initial x
     init_x = [random.uniform(-5, 5) for _ in range(2)]
     print("Initial x: ", init_x)
-
 
     # Gradient descent
     lr = 0.01
@@ -81,12 +84,13 @@ def ackley_GD_SA():
 
     # Plot 3d surface and history
     plot.plot_history(x_history, ackley.ackley, [-5, 5], [-5, 5], 'Ackley - GD')
+    plt.show()
 
 
     # Simulated annealing
     init_temp = 100
     init_s = init_x
-    s, s_history = simulated_annealing(ackley.ackley, init_s, init_temp, 1, 0.05, 10000)
+    s, s_history = simulated_annealing(ackley.ackley, init_s, init_temp, 1, 0.1, 10000)
 
     # Plot the results
     plot.plot_results(s_history, 'Ackley - SA')
@@ -94,16 +98,17 @@ def ackley_GD_SA():
 
     # Plot 3d surface and history
     plot.plot_history(s_history, ackley.ackley, [-5, 5], [-5, 5], 'Ackley - SA')
+    plt.show()
 
 if __name__ == '__main__':
     print("Input which function you want to test:")
-    print("1. Rastringin")
+    print("1. Rastrigin")
     print("2. Sphere")
     print("3. Ackley")
 
     choice = int(input())
     if choice == 1:
-        rastringin_GD_SA()
+        rastrigin_GD_SA()
     elif choice == 2:
         sphere_GD_SA()
     elif choice == 3:

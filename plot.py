@@ -9,7 +9,7 @@ def plot_results(x_history, title):
         plt.text(len(x_history), x_history[len(x_history) - 1][i], 'x[' + str(i) + '] = %.2f' % x_history[len(x_history) - 1][i])
     plt.legend(['x0', 'x1'])
     plt.title(title)
-    plt.show()
+    #plt.show()
 
 def print_results(x, title):
     print(title)
@@ -32,4 +32,4 @@ def plot_history(x_history, f, xrange, yrange, title):
     ax.scatter([ x[0] for x in x_history ], [ x[1] for x in x_history ], [ f(x) for x in x_history ], c=colors, s=5)
 
     plt.title(title)
-    plt.show()
+    #plt.show()
