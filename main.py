@@ -59,7 +59,7 @@ def sphere_GD_SA():
     # Simulated annealing
     init_temp = 100
     init_s = init_x
-    s, s_history = simulated_annealing(sphere.sphere, init_s, init_temp, 1, 0.1, 10000)
+    s, s_history = simulated_annealing(sphere.sphere, init_s, init_temp, 10, 0.1, 10000)
 
     # Plot the results
     plot.plot_results(s_history, 'Sphere - SA')
@@ -90,7 +90,7 @@ def ackley_GD_SA():
     # Simulated annealing
     init_temp = 100
     init_s = init_x
-    s, s_history = simulated_annealing(ackley.ackley, init_s, init_temp, 1, 0.1, 10000)
+    s, s_history = simulated_annealing(ackley.ackley, init_s, init_temp, 10, 0.1, 10000)
 
     # Plot the results
     plot.plot_results(s_history, 'Ackley - SA')

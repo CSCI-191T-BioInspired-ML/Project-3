@@ -10,7 +10,7 @@ from SA import simulated_annealing
 import matplotlib.pyplot as plt
 import stats
 
-ITERATIONS = 1000
+ITERATIONS = 10000
 ranges = [10, 5, 3, 2, 1]
 
 def rastrigin_tests():
