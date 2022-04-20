@@ -54,10 +54,8 @@ def modifiedSA(func, init_x, init_temp, k, neighbor_range=0.1, step_num=150, gd_
         else:
             p = math.exp((E_s - E_s_new) / T)
             if (len(gd_mins) > 1):
-                # get rid of the first min (potential global minimum)
-                gd_mins.pop(0)
                 # if the new solution is very close to one of the gd minimums, increase the probability of acceptance
-                for gd_min in gd_mins:
+                for gd_min in gd_mins[1:]:
                     if (abs(s_new[0] - gd_min[0][0]) < 0.1 and abs(s_new[1] - gd_min[0][1]) < 0.1):
                         p = math.exp((E_s - E_s_new) / (T * 10))
                         break

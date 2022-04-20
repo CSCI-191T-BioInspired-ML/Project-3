@@ -6,6 +6,7 @@ import sphere
 import ackley
 from GD import gradient_descent
 from SA import simulated_annealing
+from modifiedGDSA import modifiedGDSA
 
 import matplotlib.pyplot as plt
 import stats
@@ -79,11 +80,41 @@ def ackley_tests():
         print("Ackley - SA: <", i, ": ", counts.get(i, 0) / ITERATIONS * 100, "%")
     print()
 
+def rastrigin_modifiedGDSA_tests():
+    # GD settings
+    f = rastrigin.rastrigin_gradient
+    function = rastrigin.rastrigin
+    lr = 0.01
+    step_num = 200
+    init_x = [random.uniform(-5, 5) for _ in range(2)]
+    GD_settings = (f, init_x, lr, step_num)
+
+    # SA settings
+    init_temp = 50
+    k = 1
+    neighbor_range = 0.1
+    step_num = 10000
+    SA_settings = (init_temp, k, neighbor_range, step_num)
+
+    exploring_range = [-5, 5]
+    gd_runs = 100
+
+    counts = {}
+    for i in range(ITERATIONS):
+        init_x = [random.uniform(-5, 5) for _ in range(2)]
+        x, x_history, mins = modifiedGDSA(GD_settings, SA_settings, function, exploring_range, gd_runs)
+        counts = stats.proximity_percentage(rastrigin.rastrigin([0,0]), rastrigin.rastrigin(x), counts)
+    for i in ranges:
+        print("Rastrigin - GDSA: <", i, ": ", counts.get(i, 0) / ITERATIONS * 100, "%")
+    print()
+
 if __name__ == "__main__":
     print("Input the function you want to test:")
     print("1. Rastrigin")
     print("2. Sphere")
     print("3. Ackley")
+    print("4. Modified GDSA (Rastrigin)")
+
     choice = int(input())
     if choice == 1:
         rastrigin_tests()
@@ -91,6 +122,8 @@ if __name__ == "__main__":
         sphere_tests()
     elif choice == 3:
         ackley_tests()
+    elif choice == 4:
+        rastrigin_modifiedGDSA_tests()
     else:
         print("Invalid input")
     

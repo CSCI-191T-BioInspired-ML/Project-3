@@ -19,11 +19,8 @@ def modifiedGDSA(GD_settings, SA_settings, function, exploring_range, gd_runs):
 
     # store the best x and its value for the function in a list
     # remove minimums that have the same value
-    print("GD minimums: ", gd_minimums)
     gd_minimums.sort(key=lambda x: x[1])
     gd_minimums = [gd_minimums[0]] + [x for x in gd_minimums[1:] if x[1] != gd_minimums[0][1]]
-    print("GD minimums: ", gd_minimums)
-
 
     # run modified SA where the xs in the list have higher temperatures
     s, s_history = modifiedSA(function, init_x, init_temp, k, neighbor_range, step_num, gd_minimums)
@@ -50,7 +47,6 @@ if __name__ == "__main__":
     exploring_range = [-5, 5]
     gd_runs = 100
     s, s_history, minimums = modifiedGDSA(GD_settings, SA_settings, function, exploring_range, gd_runs)
-    print("SA: ", s)
 
     # Plot the results
     plot.plot_results(s_history, 'Rastrigin - GDSA')
