@@ -30,7 +30,7 @@ def rastrigin_tests():
     for i in range(ITERATIONS):
         init_temp = 0.01
         init_s = [random.uniform(-5, 5) for _ in range(2)]
-        s, s_history = simulated_annealing(rastrigin.rastrigin, init_s, init_temp, 5, 0.1, 200)
+        s, s_history = simulated_annealing(rastrigin.rastrigin, init_s, init_temp, 5, 0.1, 10000) # 200
         counts = stats.proximity_percentage(rastrigin.rastrigin([0,0]), rastrigin.rastrigin(s), counts)
     for i in ranges:
         print("Rastrigin - SA: <", i, ": ", counts.get(i, 0) / ITERATIONS * 100, "%")
@@ -50,9 +50,9 @@ def sphere_tests():
     # SA
     counts = {}
     for i in range(ITERATIONS):
-        init_temp = 0.01
+        init_temp = 50
         init_s = [random.uniform(-10, 10) for _ in range(2)]
-        s, s_history = simulated_annealing(sphere.sphere, init_s, init_temp, 5, 0.1, 200)
+        s, s_history = simulated_annealing(sphere.sphere, init_s, init_temp, 1, 0.1, 10000)
         counts = stats.proximity_percentage(sphere.sphere([0,0]), sphere.sphere(s), counts)
     for i in ranges:
         print("Sphere - SA: <", i, ": ", counts.get(i, 0) / ITERATIONS * 100, "%")
@@ -63,7 +63,7 @@ def ackley_tests():
     counts = {}
     for i in range(ITERATIONS):
         init_x = [random.uniform(-5, 5) for _ in range(2)]
-        x, x_history = gradient_descent(ackley.ackley_gradient, init_x, 0.01, 200)
+        x, x_history = gradient_descent(ackley.ackley_gradient, init_x, 0.01, 10000)
         counts = stats.proximity_percentage(ackley.ackley([0,0]), ackley.ackley(x), counts)
     for i in ranges:
         print("Ackley - GD: <", i, ": ", counts.get(i, 0) / ITERATIONS * 100, "%")
@@ -90,8 +90,8 @@ def rastrigin_modifiedGDSA_tests():
     GD_settings = (f, init_x, lr, step_num)
 
     # SA settings
-    init_temp = 50
-    k = 1
+    init_temp = 0.01
+    k = 5
     neighbor_range = 0.1
     step_num = 10000
     SA_settings = (init_temp, k, neighbor_range, step_num)
@@ -108,12 +108,70 @@ def rastrigin_modifiedGDSA_tests():
         print("Rastrigin - GDSA: <", i, ": ", counts.get(i, 0) / ITERATIONS * 100, "%")
     print()
 
+def sphere_modifiedGDSA_tests():
+    # GD settings
+    f = sphere.sphere_gradient
+    function = sphere.sphere
+    lr = 0.01
+    step_num = 200
+    init_x = [random.uniform(-10, 10) for _ in range(2)]
+    GD_settings = (f, init_x, lr, step_num)
+
+    # SA settings
+    init_temp = 50
+    k = 1
+    neighbor_range = 0.1
+    step_num = 10000
+    SA_settings = (init_temp, k, neighbor_range, step_num)
+
+    exploring_range = [-10, 10]
+    gd_runs = 100
+
+    counts = {}
+    for i in range(ITERATIONS):
+        init_x = [random.uniform(-10, 10) for _ in range(2)]
+        x, x_history, mins = modifiedGDSA(GD_settings, SA_settings, function, exploring_range, gd_runs)
+        counts = stats.proximity_percentage(sphere.sphere([0,0]), sphere.sphere(x), counts)
+    for i in ranges:
+        print("Sphere - GDSA: <", i, ": ", counts.get(i, 0) / ITERATIONS * 100, "%")
+    print()
+
+def ackley_modifiedGDSA_tests():
+    # GD settings
+    f = ackley.ackley_gradient
+    function = ackley.ackley
+    lr = 0.01
+    step_num = 200
+    init_x = [random.uniform(-5, 5) for _ in range(2)]
+    GD_settings = (f, init_x, lr, step_num)
+
+    # SA settings
+    init_temp = 50
+    k = 10
+    neighbor_range = 0.1
+    step_num = 10000
+    SA_settings = (init_temp, k, neighbor_range, step_num)
+
+    exploring_range = [-5, 5]
+    gd_runs = 100
+
+    counts = {}
+    for i in range(ITERATIONS):
+        init_x = [random.uniform(-5, 5) for _ in range(2)]
+        x, x_history, mins = modifiedGDSA(GD_settings, SA_settings, function, exploring_range, gd_runs)
+        counts = stats.proximity_percentage(ackley.ackley([0,0]), ackley.ackley(x), counts)
+    for i in ranges:
+        print("Ackley - GDSA: <", i, ": ", counts.get(i, 0) / ITERATIONS * 100, "%")
+    print()
+
 if __name__ == "__main__":
     print("Input the function you want to test:")
     print("1. Rastrigin")
     print("2. Sphere")
     print("3. Ackley")
     print("4. Modified GDSA (Rastrigin)")
+    print("5. Modified GDSA (Sphere)")
+    print("6. Modified GDSA (Ackley)")
 
     choice = int(input())
     if choice == 1:
@@ -124,6 +182,10 @@ if __name__ == "__main__":
         ackley_tests()
     elif choice == 4:
         rastrigin_modifiedGDSA_tests()
+    elif choice == 5:
+        sphere_modifiedGDSA_tests()
+    elif choice == 6:
+        ackley_modifiedGDSA_tests()
     else:
         print("Invalid input")
     
